@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Chart from '../components/chart';
+import './style/weather_list.css';
 
 class WeatherList extends Component {
     renderWeather(cityData) {
@@ -27,9 +28,10 @@ class WeatherList extends Component {
     }
 
     render() {
+        console.log(this.props)
 
         return (
-            <table className="table table-hover">
+            <table className="table table-hover weather">
                 <thead>
                     <tr>
                         <th>City</th>

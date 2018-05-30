@@ -7,21 +7,36 @@ class SearchBar extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { term: '' };
+		this.state = {
+			term: '',
+			countryCode: ''
+		};
 
-		this.onInputChange = this.onInputChange.bind(this);
+		this.onInputChangeCity = this.onInputChangeCity.bind(this);
+		this.onInputChangeCountryCode = this.onInputChangeCountryCode.bind(this);
 		this.onFormSubmit = this.onFormSubmit.bind(this);
 	}
 
-	onInputChange(event) {
+	onInputChangeCity(event) {
 		this.setState({ term: event.target.value });
+	}
+	onInputChangeCountryCode(event) {
+		this.setState({ countryCode: event.target.value });
 	}
 
 	onFormSubmit(event) {
-		event.preventDefault();
+		const term = this.state.term;
+		const countryCode = this.state.countryCode;
+		if(!term || !countryCode){
+			return false;
+		}
+			event.preventDefault();
 
-		this.props.fetchWeather(this.state.term);
-		this.setState({ term: '' });
+		this.props.fetchWeather(term, countryCode);
+		this.setState({
+			term: '',
+			countryCode: ''
+		});
 	}
 
 		render() {
@@ -31,7 +46,13 @@ class SearchBar extends Component {
 								placeholder="Get city"
 								className="form-control"
 								value={this.state.term}
-								onChange={this.onInputChange}
+								onChange={this.onInputChangeCity}
+							/>
+							<input
+								placeholder="Get country code"
+								className="form-control"
+								value={this.state.countryCode}
+								onChange={this.onInputChangeCountryCode}
 							/>
 								<span className="input-group-btn">
 									<button type="submit" className="btn btn-light">Submit</button>

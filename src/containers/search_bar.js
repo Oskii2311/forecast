@@ -4,14 +4,15 @@ import { bindActionCreators } from 'redux';
 import { weatherFetchData } from '../actions/index';
 import './style/weather_list.css';
 
+const initialState = {
+    term: '',
+    countryCode: ''
+}
+
 class SearchBar extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            term: '',
-            countryCode: ''
-        };
+        this.state = initialState;
 
         this.onInputChangeCity = this.onInputChangeCity.bind(this);
         this.onInputChangeCountryCode = this.onInputChangeCountryCode.bind(this);
@@ -34,10 +35,7 @@ class SearchBar extends Component {
             event.preventDefault();
 
         this.props.weatherFetchData(term, countryCode);
-        this.setState({
-            term: '',
-            countryCode: ''
-        });
+        this.setState(initialState);
     }
 
         render() {

@@ -35,10 +35,7 @@ export function weatherFetchData(city, countryCode) {
         dispatch(weatherIsLoading(true));
         fetch(URL_COUNTRY_CODE+countryCode).then(res => res.json())
         .then(res => {
-            let countryCode;
-            if(res.ok) {
-                countryCode = res[0].alpha2Code
-            }
+            const countryCode = res.ok ? res[0].alpha2Code : null;
             const url = `${URL_WEATHER}&q=${city},${countryCode}`;
 
             fetch(url)

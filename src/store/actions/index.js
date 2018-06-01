@@ -29,13 +29,12 @@ export function weatherFetchDataSuccess(items) {
     };
 }
 
-export function weatherFetchData(city, countryCode) {
-
+export function weatherFetchData(city, country) {
     return (dispatch) => {
         dispatch(weatherIsLoading(true));
-        fetch(URL_COUNTRY_CODE+countryCode).then(res => res.json())
+        fetch(URL_COUNTRY_CODE+country).then(res => res.json())
         .then(res => {
-            const countryCode = res.ok ? res[0].alpha2Code : null;
+            const countryCode = res[0].alpha2Code;
             const url = `${URL_WEATHER}&q=${city},${countryCode}`;
 
             fetch(url)

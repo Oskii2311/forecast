@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { weatherFetchData } from '../actions/index';
+import { weatherFetchData } from '../store/actions/index';
 import './style/weather_list.css';
 
 const initialState = {
@@ -32,7 +32,7 @@ class SearchBar extends Component {
         if(!term || !countryCode){
             return false;
         }
-            event.preventDefault();
+        event.preventDefault();
 
         this.props.weatherFetchData(term, countryCode);
         this.setState(initialState);

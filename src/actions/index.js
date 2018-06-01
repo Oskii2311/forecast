@@ -1,27 +1,30 @@
-import axios from 'axios';
+import { 
+    WEATHER_HAS_ERROR,
+    WEATHER_IS_LOADING,
+    WEATHER_FETCH_DATA_SUCCESS
+} from '../constants/action_type';
 
 const API_KEY = '4f3c9615124b01fd99761c91f22c6e12';
 const URL_WEATHER = `http://api.openweathermap.org/data/2.5/forecast?appid=${API_KEY}`;
 const URL_COUNTRY_CODE = 'https://restcountries.eu/rest/v2/name/';
-export const WEATHER_HAS_ERROR = 'WEATHER_HAS_ERROR';
-export const WEATHER_IS_LOADING= 'WEATHER_IS_LOADING';
-export const WEATHER_FETCH_DATA_SUCCESS= 'WEATHER_FETCH_DATA_SUCCESS';
 
 export function weatherHasErrored(bool) {
     return {
-        type: 'WEATHER_HAS_ERROR',
+        type: WEATHER_HAS_ERROR,
         hasErrored: bool
     };
 }
+
 export function weatherIsLoading(bool) {
     return {
-        type: 'WEATHER_IS_LOADING',
+        type: WEATHER_IS_LOADING,
         isLoading: bool
     };
 }
+
 export function weatherFetchDataSuccess(items) {
     return {
-        type: 'WEATHER_FETCH_DATA_SUCCESS',
+        type: WEATHER_FETCH_DATA_SUCCESS,
         payload: items
     };
 }
@@ -37,7 +40,7 @@ export function weatherFetchData(city, countryCode) {
                 countryCode = res[0].alpha2Code
             }
             const url = `${URL_WEATHER}&q=${city},${countryCode}`;
-            
+
             fetch(url)
             .then((response) => {
                 if (!response.ok) {

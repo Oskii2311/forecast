@@ -1,3 +1,11 @@
 .weather {
     margin-top: 25px !important;
 }
+
+table {
+    text-align: center;
+}
+
+table tr:first-child td:first-child {
+    vertical-align: middle;
+} 

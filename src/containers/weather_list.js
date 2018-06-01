@@ -10,12 +10,13 @@ class WeatherList extends Component {
         const cTemps = temps.map((temp) => temp-273);
         const pressures = cityData.list.map(weather => weather.main.pressure);
         const humidities = cityData.list.map(weather => weather.main.humidity);
+        const nowTemp = Math.round(cTemps[0]);
 
         return ( 
             <tr key={name}>
                 <td>{name}</td>
                 <td>
-                    <Chart data={cTemps} color="orange" units="C" />
+                    <Chart data={cTemps} color="orange" nowTemp={nowTemp} units="C" />
                 </td>
                 <td>
                     <Chart data={pressures} color="orange" units="hPa" />
@@ -40,8 +41,11 @@ class WeatherList extends Component {
                 </thead>
                 <tbody>
                     {this.props.weather.map(this.renderWeather)}
-                    {this.props.weatherHasErrored ? <tr><td colSpan="4">Error, try again please...</td></tr> :
-                    (this.props.weatherIsLoading ? <tr><td colSpan="4">isLoading...</td></tr> : null ) }
+                    {this.props.weatherIsLoading && this.props.weatherHasErrored ?
+                    <tr><td colSpan="4">Error, try again please...</td></tr> :
+                    this.props.weatherIsLoading ?
+                    <tr><td colSpan="4">Loading...</td></tr> : 
+                    null}
                 </tbody>
             </table>
         );

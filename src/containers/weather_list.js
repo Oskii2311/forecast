@@ -40,14 +40,20 @@ class WeatherList extends Component {
                 </thead>
                 <tbody>
                     {this.props.weather.map(this.renderWeather)}
+                    {this.props.weatherHasErrored ? <tr><td colSpan="4">Error, try again please...</td></tr> :
+                    (this.props.weatherIsLoading ? <tr><td colSpan="4">isLoading...</td></tr> : null ) }
                 </tbody>
             </table>
         );
     }
 }
 
-function mapStateToProps({weather}) {
-    return { weather };
+function mapStateToProps({weather, weatherHasErrored, weatherIsLoading}) {
+    return {
+        weather,
+        weatherHasErrored,
+        weatherIsLoading
+    }
 }
 
 export default connect(mapStateToProps)(WeatherList);

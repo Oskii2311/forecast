@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchWeather } from '../actions/index';
+import { weatherFetchData } from '../actions/index';
 import './style/weather_list.css';
 
 class SearchBar extends Component {
@@ -33,7 +33,7 @@ class SearchBar extends Component {
 		}
 			event.preventDefault();
 
-		this.props.fetchWeather(term, countryCode);
+		this.props.weatherFetchData(term, countryCode);
 		this.setState({
 			term: '',
 			countryCode: ''
@@ -64,7 +64,7 @@ class SearchBar extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-	return bindActionCreators({ fetchWeather }, dispatch)
+	return bindActionCreators({ weatherFetchData }, dispatch)
 }
 
 export default connect(null, mapDispatchToProps)(SearchBar);

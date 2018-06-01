@@ -3,23 +3,53 @@ import axios from 'axios';
 const API_KEY = '4f3c9615124b01fd99761c91f22c6e12';
 const URL_WEATHER = `http://api.openweathermap.org/data/2.5/forecast?appid=${API_KEY}`;
 const URL_COUNTRY_CODE = 'https://restcountries.eu/rest/v2/name/';
-export const FETCH_WEATHER = 'FETCH_WEATHER';
-export const ERROR_WEATHER = 'ERROR_WEATHER';
+export const WEATHER_HAS_ERROR = 'WEATHER_HAS_ERROR';
+export const WEATHER_IS_LOADING= 'WEATHER_IS_LOADING';
+export const WEATHER_FETCH_DATA_SUCCESS= 'WEATHER_FETCH_DATA_SUCCESS';
 
-export function fetchWeather(city, countryCode) {
-    return axios.get(URL_COUNTRY_CODE+countryCode).then(resp => {
-        const countryCode = resp.data[0].alpha2Code;
-        const url = `${URL_WEATHER}&q=${city},${countryCode}`;
-    
-        return axios.get(url).then(response => {
-            return {
-                type: FETCH_WEATHER,
-                payload: response
+export function weatherHasErrored(bool) {
+    return {
+        type: 'WEATHER_HAS_ERROR',
+        hasErrored: bool
+    };
+}
+export function weatherIsLoading(bool) {
+    return {
+        type: 'WEATHER_IS_LOADING',
+        isLoading: bool
+    };
+}
+export function weatherFetchDataSuccess(items) {
+    return {
+        type: 'WEATHER_FETCH_DATA_SUCCESS',
+        payload: items
+    };
+}
+
+export function weatherFetchData(city, countryCode) {
+
+    return (dispatch) => {
+        dispatch(weatherIsLoading(true));
+        fetch(URL_COUNTRY_CODE+countryCode).then(res => res.json())
+        .then(res => {
+            let countryCode;
+            if(res.ok) {
+                countryCode = res[0].alpha2Code
             }
-          }).catch(response => {
-            return {
-                type: ERROR_WEATHER
-            }
-        })
-    })
+            const url = `${URL_WEATHER}&q=${city},${countryCode}`;
+            
+            fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                dispatch(weatherIsLoading(false));
+                dispatch(weatherHasErrored(false));
+                return response;
+            })
+            .then((response) => response.json())
+            .then((items) => dispatch(weatherFetchDataSuccess(items)))
+            .catch(() => dispatch(weatherHasErrored(true)));
+        }).catch(() => dispatch(weatherHasErrored(true)));
+    };
 }

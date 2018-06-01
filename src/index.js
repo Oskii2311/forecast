@@ -1,20 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import ReduxPromise from 'redux-promise';
+import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import App from './components/App';
-import reducers from './reducers';
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
-const store = applyMiddleware(ReduxPromise)(createStore);
+const store = configureStore();
 
-ReactDOM.render( 
-	<Provider store={store(reducers)}>
+ReactDOM.render(
+	<Provider store={store}>
 		<App />
-	</Provider>
-	, document.getElementById('root'));
+	</Provider>, document.getElementById('root'));
 registerServiceWorker();

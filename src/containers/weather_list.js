@@ -4,7 +4,7 @@ import Chart from '../components/chart';
 import './style/weather_list.css';
 
 class WeatherList extends Component {
-    renderWeather(cityData) {
+    renderWeather(cityData, index) {
         const name = cityData.city.name;
         const temps = cityData.list.map(weather => weather.main.temp);
         const cTemps = temps.map((temp) => temp-273);
@@ -13,7 +13,7 @@ class WeatherList extends Component {
         const nowTemp = Math.round(cTemps[0]);
 
         return ( 
-            <tr key={name}>
+            <tr key={index}>
                 <td>{name}</td>
                 <td>
                     <Chart data={cTemps} color="orange" nowTemp={nowTemp} units="C" />

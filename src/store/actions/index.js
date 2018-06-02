@@ -5,7 +5,7 @@ import {
 } from '../constants/action_type';
 
 const API_KEY = '4f3c9615124b01fd99761c91f22c6e12';
-const URL_WEATHER = `http://api.openweathermap.org/data/2.5/forecast?appid=${API_KEY}`;
+const URL_WEATHER = `https://api.openweathermap.org/data/2.5/forecast?appid=${API_KEY}`;
 const URL_COUNTRY_CODE = 'https://restcountries.eu/rest/v2/name/';
 
 export function weatherHasErrored(bool) {

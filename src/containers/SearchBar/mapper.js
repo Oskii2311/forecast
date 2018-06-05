@@ -1,9 +1,9 @@
-import {bindActionCreators} from 'redux';
-import {weatherFetchData} from '../../store/actions/index';
+import { bindActionCreators } from 'redux';
+import { weatherFetchData } from '../../store/actions/index';
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    weatherFetchData
+    weatherFetchData,
   }, dispatch);
 }
 

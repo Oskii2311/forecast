@@ -10,7 +10,7 @@ export default ({
   data, color, units, nowTemp,
 }) => (
   <td>
-    <Sparklines svgHeight={120} svgWidth={180} data={data}>
+    <Sparklines svgHeight={160} svgWidth={220} data={data}>
       <SparklinesLine color={color} />
       <SparklinesReferenceLine type="avg" />
     </Sparklines>

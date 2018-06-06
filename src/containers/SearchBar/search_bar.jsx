@@ -2,8 +2,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { mapDispatchToProps, mapStateToProps } from './mapper';
 import SearchInput from '../../components/SearchInput/search_input';
+import { URL_WEATHER, URL_COUNTRY_CODE } from '../../store/constants/url';
 
 class SearchBar extends Component {
+  static createNewUrl(json, city) {
+    const countryCode = json[0].alpha2Code;
+    const url = `${URL_WEATHER}&q=${city},${countryCode}`;
+
+    return url;
+  }
+
+  static async fetchCountrycode(city, country) {
+    const response = await fetch(URL_COUNTRY_CODE + country);
+    if (!response.ok) {
+      return null;
+    }
+    const json = await response.json();
+    const newUrl = SearchBar.createNewUrl(json, city);
+
+    return newUrl;
+  }
+
   constructor(props) {
     super(props);
     this.state = SearchBar.getinitialState();
@@ -21,15 +40,22 @@ class SearchBar extends Component {
   onInputChangeCountryCode(event) {
     this.setState({ countryCode: event.target.value });
   }
+  
 
-  onFormSubmit(event) {
+  async onFormSubmit(event) {
     const { term, countryCode } = this.state;
     if (!term || !countryCode) {
       event.preventDefault();
       return false;
     }
     event.preventDefault();
-    this.props.weatherFetchData(term, countryCode);
+    const urlWithCountrycode = await SearchBar.fetchCountrycode(term, countryCode);
+
+    if (urlWithCountrycode) {
+      this.props.fetchWeatherData(urlWithCountrycode);
+    } else {
+      this.props.weatherHasErrored(true);
+    }
     this.setState(SearchBar.getinitialState());
 
     return true;
@@ -45,7 +71,7 @@ class SearchBar extends Component {
   refreshWeather() {
     this.props.resetAction();
     this.props.oldWeather.forEach((url) => {
-      this.props.fetchOld(url);
+      this.props.fetchWeatherData(url);
     });
   }
 

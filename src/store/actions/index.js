@@ -5,7 +5,6 @@ import {
   SEARCHED_WEATHER_FETCH_DATA_SUCCESS,
   RESET,
 } from '../constants/action_type';
-import { URL_WEATHER, URL_COUNTRY_CODE } from '../constants/url';
 
 export function weatherHasErrored(bool) {
   return {
@@ -41,32 +40,17 @@ export function SearchedweatherFetchDataSuccess(url) {
   };
 }
 
-export function fetchOld(url) {
-  return (dispatch) => {
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        dispatch(weatherIsLoading(false));
-        dispatch(weatherHasErrored(false));
-        return response;
-      })
-      .then(response => response.json())
-      .then(items => dispatch(weatherFetchDataSuccess(items)))
-      .catch(() => dispatch(weatherHasErrored(true)));
-  };
-}
-
-export function weatherFetchData(city, country) {
-  return (dispatch) => {
+export function fetchWeatherData(url) {
+  return async (dispatch) => {
     dispatch(weatherIsLoading(true));
-    fetch(URL_COUNTRY_CODE + country).then(res => res.json())
-      .then((res) => {
-        const countryCode = res[0].alpha2Code;
-        const url = `${URL_WEATHER}&q=${city},${countryCode}`;
-        dispatch(SearchedweatherFetchDataSuccess(url));
-        dispatch(fetchOld(url));
-      }).catch(() => dispatch(weatherHasErrored(true)));
+    dispatch(SearchedweatherFetchDataSuccess(url));
+    const response = await fetch(url);
+    if (!response.ok) {
+      dispatch(weatherHasErrored(true));
+    }
+    const json = await response.json();
+    dispatch(weatherIsLoading(false));
+    dispatch(weatherHasErrored(false));
+    dispatch(weatherFetchDataSuccess(json));
   };
 }

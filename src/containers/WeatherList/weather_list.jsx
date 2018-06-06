@@ -13,6 +13,8 @@ class WeatherList extends Component {
       return errorMessage;
     } else if (this.props.weatherIsLoading) {
       return loadingMessage;
+    } else if (this.props.weatherHasErrored) {
+      return errorMessage;
     }
 
     return null;

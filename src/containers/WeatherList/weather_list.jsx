@@ -1,42 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Chart from '../../components/Chart/chart';
+import Weather from '../../components/Weather/weather';
 import mapStateToProps from './mapper';
 import './weather_list.css';
 
 class WeatherList extends Component {
   checkIfErrorOrLoading() {
+    const errorMessage = <tr><td colSpan="4">Error, try again please...</td></tr>;
+    const loadingMessage = <tr><td colSpan="4">Loading...</td></tr>;
+
     if (this.props.weatherIsLoading && this.props.weatherHasErrored) {
-      return <tr><td colSpan="4">Error, try again please...</td></tr>;
+      return errorMessage;
     } else if (this.props.weatherIsLoading) {
-      return <tr><td colSpan="4">Loading...</td></tr>;
+      return loadingMessage;
     }
 
     return null;
-  }
-
-  static renderWeather(cityData, index) {
-    const { name } = cityData.city;
-    const temps = cityData.list.map(weather => weather.main.temp);
-    const cTemps = temps.map(temp => temp - 273);
-    const pressures = cityData.list.map(weather => weather.main.pressure);
-    const humidities = cityData.list.map(weather => weather.main.humidity);
-    const nowTemp = Math.round(cTemps[0]);
-
-    return (
-      <tr key={index}>
-        <td>{name}</td>
-        <td>
-          <Chart data={cTemps} color="orange" nowTemp={nowTemp} units="C" />
-        </td>
-        <td>
-          <Chart data={pressures} color="orange" units="hPa" />
-        </td>
-        <td>
-          <Chart data={humidities} color="orange" units="%" />
-        </td>
-      </tr>
-    );
   }
 
   render() {
@@ -51,7 +30,10 @@ class WeatherList extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.weather.map(WeatherList.renderWeather)}
+          {
+            this.props.weather.map(cityData =>
+              <Weather key={cityData.city.id} cityData={cityData} />)
+          }
           {this.checkIfErrorOrLoading()}
         </tbody>
       </table>

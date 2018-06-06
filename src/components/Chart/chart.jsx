@@ -9,12 +9,12 @@ function average(data) {
 export default ({
   data, color, units, nowTemp,
 }) => (
-  <div>
+  <td>
     <Sparklines svgHeight={120} svgWidth={180} data={data}>
       <SparklinesLine color={color} />
       <SparklinesReferenceLine type="avg" />
     </Sparklines>
     <div>Average: {average(data)} {units}</div>
     {nowTemp ? <div>Now: {nowTemp} {units}</div> : null}
-  </div>
+  </td>
 );

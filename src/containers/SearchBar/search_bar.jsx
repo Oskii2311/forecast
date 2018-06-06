@@ -29,7 +29,6 @@ class SearchBar extends Component {
       return false;
     }
     event.preventDefault();
-
     this.props.weatherFetchData(term, countryCode);
     this.setState(SearchBar.getinitialState());
 
@@ -51,6 +50,7 @@ class SearchBar extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <form className="input-group" onSubmit={this.onFormSubmit}>
         <SearchInput

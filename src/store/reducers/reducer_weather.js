@@ -27,7 +27,7 @@ export function weatherIsLoading(state = false, action) {
 export function weather(state = [], action) {
   switch (action.type) {
     case WEATHER_FETCH_DATA_SUCCESS:
-      return [...state, action.payload];
+      return [...state.filter(el => el.city.id !== action.payload.city.id), action.payload];
     case RESET:
       return [];
     default:
@@ -38,7 +38,7 @@ export function weather(state = [], action) {
 export function oldWeather(state = [], action) {
   switch (action.type) {
     case SEARCHED_WEATHER_FETCH_DATA_SUCCESS:
-      return [...state, action.payload];
+      return [...state.filter(el => el !== action.payload), action.payload];
     default:
       return state;
   }

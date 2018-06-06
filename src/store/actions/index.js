@@ -43,7 +43,6 @@ export function SearchedweatherFetchDataSuccess(url) {
 
 export function fetchOld(url) {
   return (dispatch) => {
-    dispatch(resetAction());
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -67,19 +66,7 @@ export function weatherFetchData(city, country) {
         const countryCode = res[0].alpha2Code;
         const url = `${URL_WEATHER}&q=${city},${countryCode}`;
         dispatch(SearchedweatherFetchDataSuccess(url));
-
-        fetch(url)
-          .then((response) => {
-            if (!response.ok) {
-              throw Error(response.statusText);
-            }
-            dispatch(weatherIsLoading(false));
-            dispatch(weatherHasErrored(false));
-            return response;
-          })
-          .then(response => response.json())
-          .then(items => dispatch(weatherFetchDataSuccess(items)))
-          .catch(() => dispatch(weatherHasErrored(true)));
+        dispatch(fetchOld(url));
       }).catch(() => dispatch(weatherHasErrored(true)));
   };
 }

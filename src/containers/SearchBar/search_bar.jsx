@@ -44,6 +44,7 @@ class SearchBar extends Component {
   }
 
   refreshWeather() {
+    this.props.resetAction();
     this.props.oldWeather.forEach((url) => {
       this.props.fetchOld(url);
     });

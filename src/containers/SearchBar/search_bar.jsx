@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import mapDispatchToProps from './mapper';
+import { mapDispatchToProps, mapStateToProps } from './mapper';
 import SearchInput from '../../components/SearchInput/search_input';
 
 class SearchBar extends Component {
@@ -11,6 +11,7 @@ class SearchBar extends Component {
     this.onInputChangeCity = this.onInputChangeCity.bind(this);
     this.onInputChangeCountryCode = this.onInputChangeCountryCode.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.refreshWeather = this.refreshWeather.bind(this);
   }
 
   onInputChangeCity(event) {
@@ -42,6 +43,12 @@ class SearchBar extends Component {
     };
   }
 
+  refreshWeather() {
+    this.props.oldWeather.forEach((url) => {
+      this.props.fetchOld(url);
+    });
+  }
+
   render() {
     return (
       <form className="input-group" onSubmit={this.onFormSubmit}>
@@ -57,10 +64,17 @@ class SearchBar extends Component {
         />
         <span className="input-group-btn">
           <button type="submit" className="btn btn-light">Submit</button>
+          <button
+            className="btn btn-light"
+            onClick={this.refreshWeather}
+            disabled={this.props.oldWeather.length === 0}
+          >
+          Refresh
+          </button>
         </span>
       </form>
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

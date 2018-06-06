@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux';
-import { weather, weatherIsLoading, weatherHasErrored } from './reducer_weather';
+import { oldWeather, weather, weatherIsLoading, weatherHasErrored } from './reducer_weather';
 
 const rootReducer = combineReducers({
   weather,
   weatherHasErrored,
   weatherIsLoading,
+  oldWeather,
 });
 
 export default rootReducer;

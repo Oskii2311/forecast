@@ -1,10 +1,17 @@
 import { bindActionCreators } from 'redux';
-import { weatherFetchData } from '../../store/actions/index';
+import { weatherFetchData, fetchOld } from '../../store/actions/index';
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     weatherFetchData,
+    fetchOld,
   }, dispatch);
 }
 
-export default mapDispatchToProps;
+function mapStateToProps({ oldWeather }) {
+  return {
+    oldWeather,
+  };
+}
+
+export { mapDispatchToProps, mapStateToProps };

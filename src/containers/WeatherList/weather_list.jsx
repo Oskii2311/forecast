@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Weather from '../../components/Weather/weather';
+import Error from '../Error/Error';
 import mapStateToProps from './mapper';
 import './weather_list.css';
 
 class WeatherList extends Component {
   checkIfErrorOrLoading() {
-    const errorMessage = <tr><td colSpan="4">Error, try again please...</td></tr>;
-    const loadingMessage = <tr><td colSpan="4">Loading...</td></tr>;
+    const loadingMessage = 'Loading...';
 
     if (this.props.weatherIsLoading && this.props.weatherHasErrored) {
-      return errorMessage;
+      return <Error />;
     } else if (this.props.weatherIsLoading) {
       return loadingMessage;
     } else if (this.props.weatherHasErrored) {
-      return errorMessage;
+      return <Error />;
     }
 
     return null;
@@ -37,9 +37,9 @@ class WeatherList extends Component {
               this.props.weather.map(cityData =>
                 <Weather key={cityData.city.id} cityData={cityData} />)
             }
-            {this.checkIfErrorOrLoading()}
           </tbody>
         </table>
+        {this.checkIfErrorOrLoading()}
       </div>
     );
   }

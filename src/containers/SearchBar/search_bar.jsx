@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { mapDispatchToProps, mapStateToProps } from './mapper';
 import SearchInput from '../../components/SearchInput/search_input';
-import fetchCountrycode from '../services/services';
+import fetchCountrycode from './services/services';
 
 class SearchBar extends Component {
   constructor(props) {

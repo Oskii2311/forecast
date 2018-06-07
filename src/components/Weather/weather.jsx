@@ -1,21 +1,30 @@
 import React from 'react';
-import Chart from '../Chart/chart';
+import Chart from '../Chart/Chart';
+
+function formatData(oldData) {
+  const date = oldData.split(':');
+
+  return `${date[0]}:${date[1]}`;
+}
 
 function Weather({ cityData }) {
   const { name } = cityData.city;
   const { list } = cityData;
-  const temps = list.map(weather => weather.main.temp);
-  const cTemps = temps.map(temp => temp - 273);
-  const pressures = list.map(weather => weather.main.pressure);
-  const humidities = list.map(weather => weather.main.humidity);
-  const nowTemp = Math.round(cTemps[0]);
+  const data = list.map(weather => (
+    {
+      time: formatData(weather.dt_txt),
+      Temperature: Math.round(weather.main.temp - 273),
+      Pressure: weather.main.pressure,
+      Humidity: weather.main.humidity,
+    }
+  ));
 
   return (
     <tr>
       <td>{name}</td>
-      <Chart data={cTemps} color="orange" nowTemp={nowTemp} units="C" />
-      <Chart data={pressures} color="orange" units="hPa" />
-      <Chart data={humidities} color="orange" units="%" />
+      <Chart data={data} dataKey="Temperature" />
+      <Chart data={data} dataKey="Pressure" />
+      <Chart data={data} dataKey="Humidity" />
     </tr>
   );
 }

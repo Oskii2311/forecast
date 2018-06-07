@@ -1,20 +1,31 @@
 import React from 'react';
-import { Sparklines, SparklinesLine, SparklinesReferenceLine } from 'react-sparklines';
-import _ from 'lodash';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from 'recharts';
 
-function average(data) {
-  return _.round(_.sum(data) / data.length);
+function Chart({ data, dataKey }) {
+  return (
+    <td>
+      <LineChart
+        width={450}
+        height={200}
+        data={data}
+      >
+        <XAxis dataKey="time" />
+        <YAxis />
+        <CartesianGrid strokeDasharray="3 3" />
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey={dataKey} stroke="#82ca9d" />
+      </LineChart>
+    </td>
+  );
 }
 
-export default ({
-  data, color, units, nowTemp,
-}) => (
-  <td>
-    <Sparklines svgHeight={160} svgWidth={220} data={data}>
-      <SparklinesLine color={color} />
-      <SparklinesReferenceLine type="avg" />
-    </Sparklines>
-    <div>Average: {average(data)} {units}</div>
-    {nowTemp ? <div>Now: {nowTemp} {units}</div> : null}
-  </td>
-);
+export default Chart;

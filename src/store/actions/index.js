@@ -52,9 +52,8 @@ export function fetchWeatherData(url) {
     dispatch(weatherIsLoading(false));
     dispatch(weatherHasErrored(false));
     if (json.message === 'city not found') {
-      return false;
+      dispatch(weatherHasErrored(true));
     }
-    console.log(json);
     dispatch(weatherFetchDataSuccess(json));
   };
 }

@@ -1,11 +1,12 @@
 import { bindActionCreators } from 'redux';
-import { fetchWeatherData, resetAction, weatherHasErrored } from '../../store/actions/index';
+import { weatherIsLoading, fetchWeatherData, resetAction, weatherHasErrored } from '../../store/actions/index';
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchWeatherData,
     resetAction,
     weatherHasErrored,
+    weatherIsLoading,
   }, dispatch);
 }
 

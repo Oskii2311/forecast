@@ -2,27 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { mapDispatchToProps, mapStateToProps } from './mapper';
 import SearchInput from '../../components/SearchInput/search_input';
-import { URL_WEATHER, URL_COUNTRY_CODE } from '../../store/constants/url';
+import fetchCountrycode from '../services/services';
 
 class SearchBar extends Component {
-  static createNewUrl(json, city) {
-    const countryCode = json[0].alpha2Code;
-    const url = `${URL_WEATHER}&q=${city},${countryCode}`;
-
-    return url;
-  }
-
-  static async fetchCountrycode(city, country) {
-    const response = await fetch(URL_COUNTRY_CODE + country);
-    if (!response.ok) {
-      return null;
-    }
-    const json = await response.json();
-    const newUrl = SearchBar.createNewUrl(json, city);
-
-    return newUrl;
-  }
-
   constructor(props) {
     super(props);
     this.state = SearchBar.getinitialState();
@@ -40,7 +22,6 @@ class SearchBar extends Component {
   onInputChangeCountryCode(event) {
     this.setState({ countryCode: event.target.value });
   }
-  
 
   async onFormSubmit(event) {
     const { term, countryCode } = this.state;
@@ -49,13 +30,10 @@ class SearchBar extends Component {
       return false;
     }
     event.preventDefault();
-    const urlWithCountrycode = await SearchBar.fetchCountrycode(term, countryCode);
+    this.props.weatherIsLoading(true);
 
-    if (urlWithCountrycode) {
-      this.props.fetchWeatherData(urlWithCountrycode);
-    } else {
-      this.props.weatherHasErrored(true);
-    }
+    const urlWithCountrycode = await fetchCountrycode(term, countryCode);
+    this.fetchWeatherData(urlWithCountrycode);
     this.setState(SearchBar.getinitialState());
 
     return true;
@@ -66,6 +44,16 @@ class SearchBar extends Component {
       term: '',
       countryCode: '',
     };
+  }
+
+  fetchWeatherData(urlWithCountrycode) {
+    if (urlWithCountrycode) {
+      this.props.fetchWeatherData(urlWithCountrycode);
+    } else {
+      this.props.weatherHasErrored(true);
+    }
+
+    return true;
   }
 
   refreshWeather() {

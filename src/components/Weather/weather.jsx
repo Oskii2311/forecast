@@ -1,8 +1,8 @@
 import React from 'react';
 import Chart from '../Chart/Chart';
 
-function formatData(oldData) {
-  const date = oldData.split(':');
+function formatData(oldDate) {
+  const date = oldDate.split(':');
 
   return `${date[0]}:${date[1]}`;
 }

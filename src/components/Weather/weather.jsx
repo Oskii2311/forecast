@@ -1,5 +1,5 @@
 import React from 'react';
-import Chart from '../Chart/Chart';
+import Chart from '../Chart/chart';
 
 function formatData(oldDate) {
   const date = oldDate.split(':');
@@ -10,14 +10,12 @@ function formatData(oldDate) {
 function Weather({ cityData }) {
   const { name } = cityData.city;
   const { list } = cityData;
-  const data = list.map(weather => (
-    {
-      time: formatData(weather.dt_txt),
-      Temperature: Math.round(weather.main.temp - 273),
-      Pressure: weather.main.pressure,
-      Humidity: weather.main.humidity,
-    }
-  ));
+  const data = list.map(weather => ({
+    time: formatData(weather.dt_txt),
+    Temperature: Math.round(weather.main.temp - 273),
+    Pressure: weather.main.pressure,
+    Humidity: weather.main.humidity
+  }));
 
   return (
     <tr>

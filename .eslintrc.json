@@ -1,9 +1,10 @@
 {
-  "extends": "airbnb",
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
-      "react/prop-types": 0
-    },
-    "globals": {
-      "fetch": false
-    }
+    "react/prop-types": 0
+  },
+  "globals": {
+    "fetch": false
+  }
 }
